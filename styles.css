@@ -1,0 +1,84 @@
+body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #283E51, #0A2342);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #fff;
+            color: #333;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: 700px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #0A2342;
+        }
+        .form-group {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        .form-group label {
+            font-weight: bold;
+            text-align: left;
+            margin-right: -30px;
+            width: 40%;
+        }
+        .form-group input {
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border 0.3s;
+            width: 55%;
+        }
+        .form-group input:focus {
+            border: 2px solid #0A2342;
+            outline: none;
+        }
+        .form-group.numeroNomina input {
+            width: 20% !important;
+        }
+        .form-group.numeroNomina label {
+            font-size: 16px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .form-group.nombre label {
+            font-size: 16px;
+        }
+
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background: #0A2342;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #1E3A5F;   /* Cambio de color de fondo al pasar el ratón */
+            transform: scale(1.05);    /* Efecto de escala al pasar el ratón */
+        }
+
