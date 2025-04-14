@@ -21,25 +21,43 @@ document.getElementById("generarPDF").addEventListener("click", function () {
         return f.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" }).toUpperCase();
     }
 
-    function numeroALetras(num) {
-        const unidades = ["", "UNO", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "OCHO", "NUEVE"];
-        const decenas = ["", "DIEZ", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA", "SESENTA", "SETENTA", "OCHENTA", "NOVENTA"];
-        const centenas = ["", "CIENTO", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS", "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"];
-        let parteEntera = Math.floor(num);
-        let centavos = Math.round((num - parteEntera) * 100);
+   function numeroALetras(num) {
+    const unidades = ["", "UNO", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "OCHO", "NUEVE"];
+    const especiales = ["DIEZ", "ONCE", "DOCE", "TRECE", "CATORCE", "QUINCE", "DIECISÉIS", "DIECISIETE", "DIECIOCHO", "DIECINUEVE"];
+    const decenas = ["", "", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA", "SESENTA", "SETENTA", "OCHENTA", "NOVENTA"];
+    const centenas = ["", "CIEN", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS", "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"];
 
-        function convertir(num) {
-            if (num < 10) return unidades[num];
-            if (num < 100) return decenas[Math.floor(num / 10)] + (num % 10 !== 0 ? " Y " + unidades[num % 10] : "");
-            if (num < 1000) return centenas[Math.floor(num / 100)] + (num % 100 !== 0 ? " " + convertir(num % 100) : "");
-            if (num < 1000000) return (num < 2000 ? "MIL" : convertir(Math.floor(num / 1000)) + " MIL") + (num % 1000 !== 0 ? " " + convertir(num % 1000) : "");
-            return "";
+    function convertir(n) {
+        if (n < 10) return unidades[n];
+        if (n >= 10 && n < 20) return especiales[n - 10];
+        if (n >= 20 && n < 30) return (n === 20) ? "VEINTE" : "VEINTI" + unidades[n - 20].toLowerCase();
+        if (n < 100) {
+            const dec = Math.floor(n / 10);
+            const uni = n % 10;
+            return decenas[dec] + (uni > 0 ? " Y " + unidades[uni] : "");
         }
-
-        let resultado = convertir(parteEntera) + " PESOS";
-        resultado += ` ${centavos.toString().padStart(2, "0")}/100 MN.`;
-        return resultado;
+        if (n < 1000) {
+            const cent = Math.floor(n / 100);
+            const resto = n % 100;
+            if (n === 100) return "CIEN";
+            return centenas[cent] + (resto > 0 ? " " + convertir(resto) : "");
+        }
+        if (n < 1000000) {
+            const miles = Math.floor(n / 1000);
+            const resto = n % 1000;
+            let milesTexto = miles === 1 ? "MIL" : convertir(miles) + " MIL";
+            return milesTexto + (resto > 0 ? " " + convertir(resto) : "");
+        }
+        return "";
     }
+
+    const parteEntera = Math.floor(num);
+    const centavos = Math.round((num - parteEntera) * 100);
+
+    let resultado = convertir(parteEntera) + " PESOS";
+    resultado += ` ${centavos.toString().padStart(2, "0")}/100 MN.`;
+    return resultado.toUpperCase();
+}
 
     function generarRecibo(yOffset) {
         doc.setFont("helvetica");
