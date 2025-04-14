@@ -25,12 +25,13 @@ document.getElementById("generarPDF").addEventListener("click", function () {
     const unidades = ["", "UNO", "DOS", "TRES", "CUATRO", "CINCO", "SEIS", "SIETE", "OCHO", "NUEVE"];
     const especiales = ["DIEZ", "ONCE", "DOCE", "TRECE", "CATORCE", "QUINCE", "DIECISÉIS", "DIECISIETE", "DIECIOCHO", "DIECINUEVE"];
     const decenas = ["", "", "VEINTE", "TREINTA", "CUARENTA", "CINCUENTA", "SESENTA", "SETENTA", "OCHENTA", "NOVENTA"];
-    const centenas = ["", "CIEN", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS", "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"];
+    const centenas = ["", "CIENTO", "DOSCIENTOS", "TRESCIENTOS", "CUATROCIENTOS", "QUINIENTOS", "SEISCIENTOS", "SETECIENTOS", "OCHOCIENTOS", "NOVECIENTOS"];
 
     function convertir(n) {
+        if (n === 0) return "CERO";
         if (n < 10) return unidades[n];
         if (n >= 10 && n < 20) return especiales[n - 10];
-        if (n >= 20 && n < 30) return (n === 20) ? "VEINTE" : "VEINTI" + unidades[n - 20].toLowerCase();
+        if (n >= 20 && n < 30) return n === 20 ? "VEINTE" : "VEINTI" + unidades[n - 20].toLowerCase();
         if (n < 100) {
             const dec = Math.floor(n / 10);
             const uni = n % 10;
@@ -40,7 +41,7 @@ document.getElementById("generarPDF").addEventListener("click", function () {
             const cent = Math.floor(n / 100);
             const resto = n % 100;
             if (n === 100) return "CIEN";
-            return centenas[cent] + (resto > 0 ? " " + convertir(resto) : "");
+            return (cent === 1 ? "CIENTO" : centenas[cent]) + (resto > 0 ? " " + convertir(resto) : "");
         }
         if (n < 1000000) {
             const miles = Math.floor(n / 1000);
@@ -58,6 +59,7 @@ document.getElementById("generarPDF").addEventListener("click", function () {
     resultado += ` ${centavos.toString().padStart(2, "0")}/100 MN.`;
     return resultado.toUpperCase();
 }
+
 
     function generarRecibo(yOffset) {
         doc.setFont("helvetica");
